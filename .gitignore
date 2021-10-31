@@ -1,4 +1,5 @@
-/botinfo.txt
 /src/test/
 /build/
 /.idea/
+/botinfo.properties
+/botroles.properties
