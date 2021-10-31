@@ -12,7 +12,6 @@ public class Bot {
         InputStream botInfoFile = new FileInputStream(System.getProperty("user.dir") + "\\botinfo.properties");
         Properties bot = new Properties();
         bot.load(botInfoFile);
-        System.out.println();
 
         JDA api = JDABuilder.createDefault(bot.getProperty("token"))
                 .addEventListeners(new CommandHandler(bot.getProperty("prefix")))
