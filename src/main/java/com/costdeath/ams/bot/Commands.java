@@ -4,12 +4,16 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-public class Commands extends ListenerAdapter {
+public class Commands {
 
-    public String prefix;
+    private MessageReceivedEvent event;
+    private String prefix;
+    private String[] args;
 
-    public Commands(String prefix) {
+    public Commands(MessageReceivedEvent event, String prefix, String[] args) {
+        this.event = event;
         this.prefix = prefix;
+        this.args = args;
     }
 
     public String syntaxError(String syntax) {
@@ -22,24 +26,14 @@ public class Commands extends ListenerAdapter {
         event.getChannel().sendMessage(msg).queue();
     }
 
-    @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
-        System.out.println("Received Message!");
-        Message msg = event.getMessage();
-        String[] args = msg.getContentRaw().split(" ");
-
-        if(!event.getAuthor().isBot() && args[0].startsWith(this.prefix)) {
-            args[0] = args[0].replaceFirst(this.prefix, "");
-            System.out.println("Recognised Command! args[0] is " + args[0]);
-            switch(args[0]) {
-                case "ping":
-                    if(args.length == 1) {
-                        this.sendMessage(event, "Pong!");
-                    }
-                    else {
-                        this.sendMessage(event, syntaxError("ping"));
-                    }
-            }
+    public void ping() {
+        if(args.length == 1) {
+            this.sendMessage(event, "Pong!");
+            System.out.println("Pong!");
+        }
+        else {
+            this.sendMessage(event, syntaxError("ping"));
+            System.out.println("Syntax Error.");
         }
     }
 }

@@ -15,7 +15,7 @@ public class Bot {
         System.out.println();
 
         JDA api = JDABuilder.createDefault(bot.getProperty("token"))
-                .addEventListeners(new Commands(bot.getProperty("prefix")))
+                .addEventListeners(new CommandHandler(bot.getProperty("prefix")))
                 .build();
     }
 }
