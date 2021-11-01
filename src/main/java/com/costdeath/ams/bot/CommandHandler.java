@@ -1,43 +1,56 @@
 package com.costdeath.ams.bot;
 
 import com.costdeath.ams.bot.cmd.*;
-import net.dv8tion.jda.api.entities.Message;
+import com.costdeath.ams.bot.dm.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-public class CommandHandler extends ListenerAdapter {
-    private String prefix;
-    private String staffRole;
-    private boolean isStaff = false;
+import java.util.Properties;
 
-    public CommandHandler(String prefix, String staffRole) {
-        this.prefix = prefix;
-        this.staffRole = staffRole;
+public class CommandHandler extends ListenerAdapter {
+    private Properties bot;
+    private Properties committeeCheck;
+
+    public CommandHandler(Properties bot, Properties commiteeCheck) {
+        this.bot = bot;
+        this.committeeCheck = commiteeCheck;
     }
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        Message msg = event.getMessage();
-        String[] args = msg.getContentRaw().split(" ");
+        //DM Category Message Handling
+        try {
+            if(event.getTextChannel().getParent().getId().equals(bot.getProperty("dmCategoryId")) && !event.getAuthor().isBot()) { new DmCategoryHandler(event, committeeCheck); }
+        }catch(Exception e) {}
 
-        if(!event.getAuthor().isBot() && args[0].startsWith(this.prefix) && event.isFromGuild()) {
-            args[0] = args[0].replaceFirst(this.prefix, "");
-            System.out.println("User " + event.getAuthor().getAsTag() + " used the command \"" + msg.getContentRaw() + "\".");
-            try { this.isStaff = event.getMember().getRoles().contains(event.getGuild().getRoleById(staffRole));
-            } catch(Exception e) {System.out.println("No staff role defined. Try adding a staff role!");}
+        //Create Args
+        String[] args = event.getMessage().getContentRaw().split(" ");
 
+        //Commands
+        if(!event.getAuthor().isBot() && args[0].startsWith(bot.getProperty("prefix")) && event.isFromGuild()) {
+            args[0] = args[0].replaceFirst(bot.getProperty("prefix"), "");
+
+            //Staff Commands
+            if(event.getMember().getRoles().contains(event.getGuild().getRoleById(bot.getProperty("committeeRoleId")))) {
+                switch(args[0]) {
+                    case "ping":
+                        new Ping(event, bot.getProperty("prefix"), args);
+                        break;
+                }
+            }
+
+            //Regular Commands
             switch(args[0]) {
-                case "setstaffrole":
-                    SetStaffRole cmd = new SetStaffRole(event, this.prefix, args);
-                    this.staffRole = cmd.roleId;
-                    break;
-
-                //Staff Commands
-                case "indexrole": new IndexRole(event, this.prefix, args, isStaff); break;
-
-                //Regular Commands
-                case "ping": new Ping(event, this.prefix, args);
             }
         }
+    }
+
+    @Override
+    public void onMessageUpdate(MessageUpdateEvent event) {
+        //DM Category Edit Handling
+        try {
+            if (event.getTextChannel().getParent().getId().equals(bot.getProperty("dmCategoryId")) && !event.getAuthor().isBot()) { new DmCategoryEditHandler(event, committeeCheck); }
+        }catch(Exception e){}
     }
 }

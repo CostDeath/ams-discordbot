@@ -8,11 +8,17 @@ import java.util.Properties;
 public class Bot {
 
     public static void main(String[] arguments) throws Exception {
+        //Load Properties
         Properties bot = new Properties();
-        bot.load(new FileInputStream(System.getProperty("user.dir") + "\\botinfo.properties"));
+        Properties committeeCheck = new Properties();
 
+        bot.load(new FileInputStream(System.getProperty("user.dir") + "\\botinfo.properties"));
+        committeeCheck.load(new FileInputStream(System.getProperty("user.dir") + "\\committeeroles.properties"));
+
+        //Load Bot API
         JDA api = JDABuilder.createDefault(bot.getProperty("token"))
-                .addEventListeners(new CommandHandler(bot.getProperty("prefix"), bot.getProperty("staffRoleId")))
+                .addEventListeners(new PrivateMessageHandler(bot))
+                .addEventListeners(new CommandHandler(bot, committeeCheck))
                 .build();
     }
 }
