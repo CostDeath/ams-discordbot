@@ -19,7 +19,7 @@ public class DmPrivateHandler {
             //Register User in dmChannels && Create New Text Channel
             dmChannels.setProperty(event.getAuthor().getId(), event.getJDA().getGuildById(bot.getProperty("serverId")).createTextChannel(event.getAuthor().getName() + "-" + event.getAuthor().getId(), event.getJDA().getCategoryById(bot.getProperty("dmCategoryId"))).complete().getId());
             try {
-                dmChannels.store(new FileOutputStream(System.getProperty("user.dir") + "\\dmchannels.properties"), "Added a channel for " + event.getAuthor().getName());
+                dmChannels.store(new FileOutputStream(System.getProperty("user.dir") + System.getProperty("file.separator") + "dmchannels.properties"), "Added a channel for " + event.getAuthor().getName());
             } catch (Exception e) { System.out.println("Please create a dmchannels.properties!"); }
 
             //Send Initiation Message to User
