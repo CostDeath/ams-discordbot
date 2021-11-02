@@ -12,8 +12,8 @@ public class Bot {
         Properties bot = new Properties();
         Properties committeeCheck = new Properties();
 
-        bot.load(new FileInputStream(System.getProperty("user.dir") + "\\botinfo.properties"));
-        committeeCheck.load(new FileInputStream(System.getProperty("user.dir") + "\\committeeroles.properties"));
+        bot.load(new FileInputStream(System.getProperty("user.dir") + System.getProperty("file.separator") + "botinfo.properties"));
+        committeeCheck.load(new FileInputStream(System.getProperty("user.dir") + System.getProperty("file.separator") + "committeeroles.properties"));
 
         //Load Bot API
         JDA api = JDABuilder.createDefault(bot.getProperty("token"))

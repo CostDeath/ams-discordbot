@@ -11,19 +11,16 @@ public class DmPrivateHandler {
     public DmPrivateHandler(PrivateMessageReceivedEvent event, Properties bot) {
         //Refresh dmChannels List
         Properties dmChannels = new Properties();
-        try{dmChannels.load(new FileInputStream(System.getProperty("user.dir") + "\\dmchannels.properties"));
+        try{dmChannels.load(new FileInputStream(System.getProperty("user.dir") + System.getProperty("file.separator") + "dmchannels.properties"));
         }catch(Exception e) {System.out.println("Please create a dmchannels.properties!");}
 
         //New DM Category User
         if (!dmChannels.containsKey(event.getAuthor().getId())) {
-            //Register User in dmChannels
-            dmChannels.setProperty(event.getAuthor().getId(), event.getAuthor().getName() + "-" + event.getAuthor().getId());
+            //Register User in dmChannels && Create New Text Channel
+            dmChannels.setProperty(event.getAuthor().getId(), event.getJDA().getGuildById(bot.getProperty("serverId")).createTextChannel(event.getAuthor().getName() + "-" + event.getAuthor().getId(), event.getJDA().getCategoryById(bot.getProperty("dmCategoryId"))).complete().getId());
             try {
                 dmChannels.store(new FileOutputStream(System.getProperty("user.dir") + "\\dmchannels.properties"), "Added a channel for " + event.getAuthor().getName());
             } catch (Exception e) { System.out.println("Please create a dmchannels.properties!"); }
-
-            //Create New Text Channel
-            event.getJDA().getGuildById(bot.getProperty("serverId")).createTextChannel(dmChannels.getProperty(event.getAuthor().getId()), event.getJDA().getCategoryById(bot.getProperty("dmCategoryId"))).complete();
 
             //Send Initiation Message to User
             EmbedBuilder embed = new EmbedBuilder();
@@ -36,7 +33,7 @@ public class DmPrivateHandler {
             //Send Initiation Message to dmChannels
             embed.setTitle("New conversation with " + event.getAuthor().getName() + "!")
                     .setDescription("Do your best to help 'em out! " + event.getJDA().getEmoteById(bot.getProperty("blobheart")).getAsMention());
-            event.getJDA().getGuildById(bot.getProperty("serverId")).getTextChannelsByName(dmChannels.getProperty(event.getAuthor().getId()), true).get(0).sendMessage(embed.build()).queue();
+            event.getJDA().getGuildById(bot.getProperty("serverId")).getTextChannelById(dmChannels.getProperty(event.getAuthor().getId())).sendMessage(embed.build()).queue();
         }
 
         //Send Message
@@ -48,6 +45,6 @@ public class DmPrivateHandler {
                 .setTimestamp(event.getMessage().getTimeCreated());
         if (!event.getMessage().getAttachments().isEmpty() && event.getMessage().getAttachments().get(0).isImage()) { embed.setImage(event.getMessage().getAttachments().get(0).getUrl()); }
         if(!event.getMessage().getEmbeds().isEmpty()) {embed.setImage(event.getMessage().getEmbeds().get(0).getThumbnail().getUrl());}
-        event.getJDA().getGuildById(bot.getProperty("serverId")).getTextChannelsByName(dmChannels.getProperty(event.getAuthor().getId()), true).get(0).sendMessage(embed.build()).queue();
+        event.getJDA().getGuildById(bot.getProperty("serverId")).getTextChannelById(dmChannels.getProperty(event.getAuthor().getId())).sendMessage(embed.build()).queue();
     }
 }

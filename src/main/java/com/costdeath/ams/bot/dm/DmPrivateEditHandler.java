@@ -11,7 +11,7 @@ public class DmPrivateEditHandler {
     public DmPrivateEditHandler(PrivateMessageUpdateEvent event, Properties bot) {
         //Refresh dmChannels List
         Properties dmChannels = new Properties();
-        try{dmChannels.load(new FileInputStream(System.getProperty("user.dir") + "\\dmchannels.properties"));
+        try{dmChannels.load(new FileInputStream(System.getProperty("user.dir") + System.getProperty("file.separator") + "dmchannels.properties"));
         }catch(Exception e) {System.out.println("Please create a dmchannels.properties!");}
 
         //Send Message
@@ -24,6 +24,6 @@ public class DmPrivateEditHandler {
                 .setTimestamp(event.getMessage().getTimeEdited());
         if (!event.getMessage().getAttachments().isEmpty() && event.getMessage().getAttachments().get(0).isImage()) { embed.setImage(event.getMessage().getAttachments().get(0).getUrl()); }
         if(!event.getMessage().getEmbeds().isEmpty()) {embed.setImage(event.getMessage().getEmbeds().get(0).getThumbnail().getUrl());}
-        event.getJDA().getGuildById(bot.getProperty("serverId")).getTextChannelsByName(dmChannels.getProperty(event.getAuthor().getId()), true).get(0).sendMessage(embed.build()).queue();
+        event.getJDA().getGuildById(bot.getProperty("serverId")).getTextChannelById(dmChannels.getProperty(event.getAuthor().getId())).sendMessage(embed.build()).queue();
     }
 }
