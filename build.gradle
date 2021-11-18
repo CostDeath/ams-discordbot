@@ -7,8 +7,8 @@ plugins {
 mainClassName = 'com.costdeath.ams.bot.Bot'
 
 group 'com.costdeath'
-version '1.0.1'
-def jdaVersion = '4.3.0_277'
+version '1.0.2'
+def jdaVersion = '4.3.0_297'
 
 sourceCompatibility = targetCompatibility = 1.8
 

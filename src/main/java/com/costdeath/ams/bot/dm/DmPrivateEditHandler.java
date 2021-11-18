@@ -22,8 +22,14 @@ public class DmPrivateEditHandler {
                 .setAuthor(event.getAuthor().getAsTag(), null, event.getAuthor().getAvatarUrl())
                 .setFooter("Message id: " + event.getMessageId())
                 .setTimestamp(event.getMessage().getTimeEdited());
-        if (!event.getMessage().getAttachments().isEmpty() && event.getMessage().getAttachments().get(0).isImage()) { embed.setImage(event.getMessage().getAttachments().get(0).getUrl()); }
-        if(!event.getMessage().getEmbeds().isEmpty()) {embed.setImage(event.getMessage().getEmbeds().get(0).getThumbnail().getUrl());}
-        event.getJDA().getGuildById(bot.getProperty("serverId")).getTextChannelById(dmChannels.getProperty(event.getAuthor().getId())).sendMessage(embed.build()).queue();
+
+        if (!event.getMessage().getAttachments().isEmpty() && event.getMessage().getAttachments().get(0).isImage()) {
+            embed.setImage(event.getMessage().getAttachments().get(0).getUrl());
+        }
+        if(!event.getMessage().getEmbeds().isEmpty()) {
+            embed.setImage(event.getMessage().getEmbeds().get(0).getThumbnail().getUrl());
+        }
+
+        event.getJDA().getGuildById(bot.getProperty("serverId")).getTextChannelById(dmChannels.getProperty(event.getAuthor().getId())).sendMessageEmbeds(embed.build()).queue();
     }
 }

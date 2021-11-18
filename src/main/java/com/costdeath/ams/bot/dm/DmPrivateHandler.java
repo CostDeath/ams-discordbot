@@ -28,12 +28,12 @@ public class DmPrivateHandler {
                     .setDescription("Thank you for contacting the AMS committee! We'll get back to you as soon as we can! " + event.getJDA().getEmoteById(bot.getProperty("blobheart")).getAsMention())
                     .setThumbnail("https://cdn.discordapp.com/icons/381495502275084289/cc894e3c3c81b2cf4bbde1edc52cfcb6.webp")
                     .setColor(0xe3782b);
-            event.getChannel().sendMessage(embed.build()).queue();
+            event.getChannel().sendMessageEmbeds(embed.build()).queue();
 
             //Send Initiation Message to dmChannels
             embed.setTitle("New conversation with " + event.getAuthor().getName() + "!")
                     .setDescription("Do your best to help 'em out! " + event.getJDA().getEmoteById(bot.getProperty("blobheart")).getAsMention());
-            event.getJDA().getGuildById(bot.getProperty("serverId")).getTextChannelById(dmChannels.getProperty(event.getAuthor().getId())).sendMessage(embed.build()).queue();
+            event.getJDA().getGuildById(bot.getProperty("serverId")).getTextChannelById(dmChannels.getProperty(event.getAuthor().getId())).sendMessageEmbeds(embed.build()).queue();
         }
 
         //Send Message
@@ -43,8 +43,14 @@ public class DmPrivateHandler {
                 .setAuthor(event.getAuthor().getAsTag(), null, event.getAuthor().getAvatarUrl())
                 .setFooter("Message id: " + event.getMessageId())
                 .setTimestamp(event.getMessage().getTimeCreated());
-        if (!event.getMessage().getAttachments().isEmpty() && event.getMessage().getAttachments().get(0).isImage()) { embed.setImage(event.getMessage().getAttachments().get(0).getUrl()); }
-        if(!event.getMessage().getEmbeds().isEmpty()) {embed.setImage(event.getMessage().getEmbeds().get(0).getThumbnail().getUrl());}
-        event.getJDA().getGuildById(bot.getProperty("serverId")).getTextChannelById(dmChannels.getProperty(event.getAuthor().getId())).sendMessage(embed.build()).queue();
+
+        if (!event.getMessage().getAttachments().isEmpty() && event.getMessage().getAttachments().get(0).isImage()) {
+            embed.setImage(event.getMessage().getAttachments().get(0).getUrl());
+        }
+        if(!event.getMessage().getEmbeds().isEmpty()) {
+            embed.setImage(event.getMessage().getEmbeds().get(0).getThumbnail().getUrl());
+        }
+
+        event.getJDA().getGuildById(bot.getProperty("serverId")).getTextChannelById(dmChannels.getProperty(event.getAuthor().getId())).sendMessageEmbeds(embed.build()).queue();
     }
 }

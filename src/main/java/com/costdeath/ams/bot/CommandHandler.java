@@ -19,11 +19,6 @@ public class CommandHandler extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        //DM Category Message Handling
-        try {
-            if(event.getTextChannel().getParent().getId().equals(bot.getProperty("dmCategoryId")) && !event.getAuthor().isBot()) { new DmCategoryHandler(event, committeeCheck); }
-        }catch(Exception e) {}
-
         //Create Args
         String[] args = event.getMessage().getContentRaw().split(" ");
 
@@ -36,7 +31,11 @@ public class CommandHandler extends ListenerAdapter {
                 switch(args[0]) {
                     case "ping":
                         new Ping(event, bot.getProperty("prefix"), args);
-                        break;
+                        return;
+                    case "close":
+                        if (event.getTextChannel().getParent().getId().equals(bot.getProperty("dmCategoryId")) && !event.getAuthor().isBot())
+                            {new DmClose(event, bot);}
+                        return;
                 }
             }
 
@@ -44,6 +43,11 @@ public class CommandHandler extends ListenerAdapter {
             switch(args[0]) {
             }
         }
+
+        //DM Category Message Handling
+        try {
+            if(event.getTextChannel().getParent().getId().equals(bot.getProperty("dmCategoryId")) && !event.getAuthor().isBot()) { new DmCategoryHandler(event, committeeCheck); }
+        }catch(Exception e) {}
     }
 
     @Override

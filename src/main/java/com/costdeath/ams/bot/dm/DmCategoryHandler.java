@@ -36,6 +36,6 @@ public class DmCategoryHandler {
             embed.setImage(event.getMessage().getEmbeds().get(0).getThumbnail().getUrl());
         }
 
-        channel.sendMessage(embed.build()).queue();
+        channel.sendMessageEmbeds(embed.build()).queue();
     }
 }
