@@ -2,6 +2,7 @@ package com.costdeath.ams.bot;
 
 import com.costdeath.ams.bot.cmd.*;
 import com.costdeath.ams.bot.dm.*;
+import net.dv8tion.jda.api.entities.MessageType;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -33,9 +34,14 @@ public class CommandHandler extends ListenerAdapter {
                         new Ping(event, bot.getProperty("prefix"), args);
                         return;
                     case "close":
-                        if (event.getTextChannel().getParent().getId().equals(bot.getProperty("dmCategoryId")) && !event.getAuthor().isBot())
+                        if(event.getMessage().getType().equals(MessageType.INLINE_REPLY)) {
+                            new PollClose(event);
+                        }
+                        else if (event.getTextChannel().getParent().getId().equals(bot.getProperty("dmCategoryId")) && !event.getAuthor().isBot())
                             {new DmClose(event, bot);}
                         return;
+                    case "poll":
+                        new Poll(event, args);
                 }
             }
 

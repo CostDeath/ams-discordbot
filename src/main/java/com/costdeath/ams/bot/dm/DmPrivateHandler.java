@@ -8,7 +8,7 @@ import java.io.FileOutputStream;
 import java.util.Properties;
 
 public class DmPrivateHandler {
-    public DmPrivateHandler(PrivateMessageReceivedEvent event, Properties bot) {
+    public DmPrivateHandler(PrivateMessageReceivedEvent event, Properties bot) throws Exception {
         //Refresh dmChannels List
         Properties dmChannels = new Properties();
         try{dmChannels.load(new FileInputStream(System.getProperty("user.dir") + System.getProperty("file.separator") + "dmchannels.properties"));

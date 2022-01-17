@@ -19,6 +19,7 @@ public class Bot {
         JDA api = JDABuilder.createDefault(bot.getProperty("token"))
                 .addEventListeners(new PrivateMessageHandler(bot))
                 .addEventListeners(new CommandHandler(bot, committeeCheck))
+                .addEventListeners(new SelectionMenuHandler())
                 .build();
     }
 }
