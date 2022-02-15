@@ -18,7 +18,11 @@ public class PrivateMessageHandler extends ListenerAdapter {
     @Override
     public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
         //Check if Message is valid
-        if(!event.getAuthor().isBot() && !event.getAuthor().isSystem()) { new DmPrivateHandler(event, bot); }
+        try {
+            if (!event.getAuthor().isBot() && !event.getAuthor().isSystem()) {
+                new DmPrivateHandler(event, bot);
+            }
+        } catch(Exception e) {}
     }
 
     @Override

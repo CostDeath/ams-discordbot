@@ -8,7 +8,7 @@ import java.io.FileOutputStream;
 import java.util.Properties;
 
 public class DmPrivateHandler {
-    public DmPrivateHandler(PrivateMessageReceivedEvent event, Properties bot) {
+    public DmPrivateHandler(PrivateMessageReceivedEvent event, Properties bot) throws Exception {
         //Refresh dmChannels List
         Properties dmChannels = new Properties();
         try{dmChannels.load(new FileInputStream(System.getProperty("user.dir") + System.getProperty("file.separator") + "dmchannels.properties"));
@@ -26,7 +26,7 @@ public class DmPrivateHandler {
             EmbedBuilder embed = new EmbedBuilder();
             embed.setTitle("Message was sent!", null)
                     .setDescription("Thank you for contacting the AMS committee! We'll get back to you as soon as we can! " + event.getJDA().getEmoteById(bot.getProperty("blobheart")).getAsMention())
-                    .setThumbnail("https://cdn.discordapp.com/icons/381495502275084289/cc894e3c3c81b2cf4bbde1edc52cfcb6.webp")
+                    .setThumbnail("https://lh5.googleusercontent.com/UI8A7U-S1SpwX1u2fEJjvL3gdGkBMJh7NtO-2Zl1fyfPbjdLpdv1QplA821UKIrzzxYU0TWUST5UfdhonUbJ=w1294-h627")
                     .setColor(0xe3782b);
             event.getChannel().sendMessageEmbeds(embed.build()).queue();
 

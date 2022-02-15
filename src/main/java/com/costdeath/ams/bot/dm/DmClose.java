@@ -20,7 +20,7 @@ public class DmClose {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setTitle("This conversation has been closed.", null)
                 .setDescription("Thank you for contacting the AMS committee! \nWe hope to have solved any issues you may have had. \nLooking forward too seeing you at our next event! " + event.getJDA().getEmoteById(bot.getProperty("blobheart")).getAsMention())
-                .setThumbnail("https://cdn.discordapp.com/icons/381495502275084289/cc894e3c3c81b2cf4bbde1edc52cfcb6.webp")
+                .setThumbnail("https://lh5.googleusercontent.com/UI8A7U-S1SpwX1u2fEJjvL3gdGkBMJh7NtO-2Zl1fyfPbjdLpdv1QplA821UKIrzzxYU0TWUST5UfdhonUbJ=w1294-h627")
                 .setColor(0xe3782b);
         channel.sendMessageEmbeds(embed.build()).queue();
 
